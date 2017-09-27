@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMuseumsTable extends Migration
+class CreateArtifactsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,23 @@ class CreateMuseumsTable extends Migration
      */
     public function up()
     {
-        Schema::create('museums', function (Blueprint $table) {
+        Schema::create('artifacts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('address');
-            $table->string('phone');
+            $table->string('marker_path');
+            $table->integer('type_id')->unsigned();
+            $table->longText('description');
+            $table->string('video_url');
             $table->timestamps();
             $table->string('createdBy');
             $table->string('updatedBy');
             $table->softDeletes();
             $table->string('deletedBy');
+            $table->foreign('type_id')->references('id')->on('types');
+
+
+
+
         });
     }
 
@@ -33,6 +40,6 @@ class CreateMuseumsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('museums');
+        Schema::dropIfExists('artifacts');
     }
 }

@@ -5,12 +5,12 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Museum extends Model
+class Showroom extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [
-        'name', 'address',  'phone', 'createdBy', 'updatedBy'
+        'name', 'museum_id', 'createdBy', 'updatedBy'
     ];
 
     protected $dates = ['deleted_at'];
