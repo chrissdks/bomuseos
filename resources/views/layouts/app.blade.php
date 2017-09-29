@@ -32,6 +32,7 @@
                         {{ config('app.name', 'Laravel') }}
                     </a>-->
                      <a class="navbar-brand" href="{{ url('/reservations')}}">Reservations</a>
+                    <a class="navbar-brand" href="{{ url('/museums')}}">Museos</a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">

@@ -20,4 +20,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('/reservations','reservations');
+Route::resource('/museums','MuseumController');
 

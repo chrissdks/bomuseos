@@ -12,9 +12,11 @@ class MuseumController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index(){
+        $museum = Museum::all();
+
+
+        return view('museums')->with(['museums' => $museum]);
     }
 
     /**
