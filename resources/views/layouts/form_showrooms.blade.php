@@ -7,8 +7,24 @@
 <div class="alert alert-danger">No se guardaron los datos</div>
 @endif
 
-<form class="form-horizontal" role="form" method="POST" action="{{ url('museums') }}">
+<form class="form-horizontal" role="form" method="POST" action="{{ url('showrooms') }}">
 {{ csrf_field() }}
+
+
+    <div class="form-group">
+        <label for="family" class="col-lg-2 control-label">Museo</label><span class="fa fa-list-alt"></span>
+        <div class="col-lg-10">
+            <select class="form-control" name="museum" id="museum" required>
+                <option value="" disabled="true" selected="">Elija un museo</option>
+                @foreach($museum as $row)
+                    <option value="{{$row->id}}">{{$row->name}}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+
+
+
     <div class="form-group">
         <label for="address" class="col-lg-2 control-label">Nombre</label> <span class="fa fa-bank"></span>
         <div class="col-lg-10">
@@ -19,35 +35,6 @@
         </div>
     </div>
 
-
-
-
-
-	  <div class="form-group">
-	  <label for="address" class="col-lg-2 control-label">Dirección</label> <span class="fa fa-home"></span>
-
-	  <div class="col-lg-10">
-          <input type="text" class="form-control" name="address" placeholder="Ingrese la dirección del museo" required>
-		  @if($errors->has('address'))
-			  <span style="color:red;">{{ $errors->first('address') }}</span>
-		  @endif
-	  </div>
-      </div>
-
-          <div class="form-group">
-              <label for="phone" class="col-lg-2 control-label">Teléfono</label> <span class="fa fa-phone"></span>
-               <div class="col-lg-10">
-                  <input type="text" class="form-control" name="phone" placeholder="Ingrese el teléfono" required>
-                  @if($errors->has('phone'))
-                      <span style="color:red;">{{ $errors->first('phone') }}</span>
-                  @endif
-              </div>
-
-
-
-
-
-  </div>
 
 
   <div class="form-group">

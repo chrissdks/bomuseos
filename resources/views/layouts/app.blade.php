@@ -33,6 +33,7 @@
                     </a>-->
                      <a class="navbar-brand" href="{{ url('/reservations')}}">Reservations</a>
                     <a class="navbar-brand" href="{{ url('/museums')}}">Museos</a>
+                    <a class="navbar-brand" href="{{ url('/showrooms')}}">Salas</a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
