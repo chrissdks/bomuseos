@@ -85,21 +85,21 @@ class ArtifactController extends Controller
 
 //GENERACION DE CODIGO QR
         $qrcode = new BaconQrCodeGenerator;
-        $qrcode->format('png')->margin(0)->size(480)->backgroundColor(255,255,255)->generate($request->name.','.Hash::make($request->name).','.$request->type.','.$request->showroom,base_path() . '/public/marcadores/'.$museumname->name.'/'.$showroomname->name.'/'.str_replace(' ', '_', $request->name).'_marker.png');
+        $qrcode->format('png')->margin(0)->size(480)->backgroundColor(255,255,255)->generate($request->name.','.Hash::make($request->name).','.$request->type.','.$request->showroom,base_path() . '/public/Marcadores/'.$museumname->name.'/'.$showroomname->name.'/'.str_replace(' ', '_', $request->name).'_marker.png');
 
 
 
 
 //marker path
-        $artifact->marker_path = base_path() . '/public/marcadores/'.$museumname->name.'/'.$showroomname->name.'/'.str_replace(' ', '_', $request->name).'_marker.png';
+        $artifact->marker_path = base_path() . '/public/Marcadores/'.$museumname->name.'/'.$showroomname->name.'/'.str_replace(' ', '_', $request->name).'_marker.png';
 
 //Path para la imagen
         if($request->hasFile('image')) {
             $imageName = str_replace(' ', '_', $request->name) . '.' . $request->file('image')->getClientOriginalExtension();
-            $artifact->image_path = base_path() . '/public/marcadores/' . $museumname->name . '/' . $showroomname->name . '/' .$imageName;
+            $artifact->image_path = base_path() . '/public/Marcadores/' . $museumname->name . '/' . $showroomname->name . '/' .$imageName;
 
-            $request->file('image')->move(base_path() . '/public/marcadores/' . $museumname->name . '/' . $showroomname->name . '/', $imageName);
-            $image_path=base_path() . '/public/marcadores/' . $museumname->name . '/' . $showroomname->name . '/' . $imageName;
+            $request->file('image')->move(base_path() . '/public/Marcadores/' . $museumname->name . '/' . $showroomname->name . '/', $imageName);
+            $image_path=base_path() . '/public/Marcadores/' . $museumname->name . '/' . $showroomname->name . '/' . $imageName;
         }
         else{
             $artifact->image_path='';
@@ -110,10 +110,10 @@ class ArtifactController extends Controller
         if($request->hasFile('video')) {
 
             $videoName = str_replace(' ', '_', $request->name) . '.' . $request->file('video')->getClientOriginalExtension();
-            $artifact->video_url = base_path() . '/public/marcadores/' . $museumname->name . '/' . $showroomname->name . '/' .$videoName;
+            $artifact->video_url = base_path() . '/public/Marcadores/' . $museumname->name . '/' . $showroomname->name . '/' .$videoName;
 
-            $request->file('video')->move(base_path() . '/public/marcadores/' . $museumname->name . '/' . $showroomname->name . '/', $videoName);
-            $video_url= base_path() . '/public/marcadores/' . $museumname->name . '/' . $showroomname->name . '/' . $videoName;
+            $request->file('video')->move(base_path() . '/public/Marcadores/' . $museumname->name . '/' . $showroomname->name . '/', $videoName);
+            $video_url= base_path() . '/public/Marcadores/' . $museumname->name . '/' . $showroomname->name . '/' . $videoName;
         }
         else{
             $artifact->video_url='';
@@ -137,7 +137,7 @@ class ArtifactController extends Controller
         $result= VWS::addTarget([
             'name' =>str_replace(' ', '_',  $request->name),
             'width' => 50,
-            'path' => base_path() . '/public/marcadores/'.$museumname->name.'/'.$showroomname->name.'/'.str_replace(' ', '_', $request->name).'_marker.png',
+            'path' => base_path() . '/public/Marcadores/'.$museumname->name.'/'.$showroomname->name.'/'.str_replace(' ', '_', $request->name).'_marker.png',
             'metadata'=>$meta]);
         $body=json_decode($result['body'],true);
 
