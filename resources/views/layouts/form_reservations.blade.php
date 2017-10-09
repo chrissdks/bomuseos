@@ -2,7 +2,7 @@
 <div class="alert alert-success">{{ session('msj') }}</div>
 @endif
 @if(session()->has('errormsj'))
-<div class="alert alert-danger">No se guardaron los datos</div>
+<div class="alert alert-danger">{{ session('errormsj') }}</div>
 @endif
 
 <form class="form-horizontal" enctype="multipart/form-data" role="form" method="POST" action="{{ url('reservations') }}">

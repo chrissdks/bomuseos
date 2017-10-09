@@ -10,7 +10,7 @@ class Artifact extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'name', 'marker_path', 'marker_Id','type_id','description','video_url', 'createdBy', 'updatedBy'
+        'name', 'marker_path','type_id','description','video_url','image_path','target_id', 'createdBy', 'updatedBy'
     ];
 
     protected $dates = ['deleted_at'];

@@ -8,6 +8,8 @@ use App\Museum;
 use Illuminate\Support\Facades\Auth;
 use App\Rules\alpha_space;
 use App\Rules\alpha_num_space;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class ShowroomController extends Controller
 {
@@ -62,9 +64,13 @@ class ShowroomController extends Controller
         $showroom->createdBy   = Auth::user()->name.' '.Auth::user()->last_name;
         $showroom->updatedBy   = Auth::user()->name.' '.Auth::user()->last_name;
         $showroom->deletedBy   = '';
+        $museumname = DB::table('museums')
+            ->select('name')
+            ->where('id',$request->museum)->first();
 
 
         if($showroom->save()){
+            File::makeDirectory(base_path() . '/public/marcadores/'.$museumname->name.'/'.$request->name,0775, true);
             return back()->with('msj', 'Datos guardados');
         }
         else{

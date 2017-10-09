@@ -179,6 +179,7 @@ return [
         Laraveles\Spanish\SpanishServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
         Panoscape\Vuforia\VuforiaWebServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
        
 
     ],
@@ -231,6 +232,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
         'VWS' => Panoscape\Vuforia\Facades\VuforiaWebService::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
 
     ],
 

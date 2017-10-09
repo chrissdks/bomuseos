@@ -56,12 +56,10 @@ $body=['name' => $request->name,
 $result= VWS::addTarget(['name' => $request->name, 
     'width' => 50, 
     'path' => base_path() . '/public/marcadores/'.$request->name.'.png',
-    'metadata'=>$meta]); 
-
-    dd($result); 
-
-
-
+    'metadata'=>$meta]);
+       // $body=json_decode($result['body'],true);
+   //dd($result);
+        $body=json_decode($result['body'],true);
 
 
 
@@ -74,23 +72,66 @@ $result= VWS::addTarget(['name' => $request->name,
 
 
 
-      /*   $imageName =$request->name .'.' .$request->file('marcador')->getClientOriginalExtension();
 
 
-    $request->file('marcador')->move( base_path() . '/public/marcadores/', $imageName);
-*/
+
+
+        /* $imageName =$request->name .'.' .$request->file('marcador')->getClientOriginalExtension();
+
+
+    $request->file('marcador')->move( base_path() . '/public/marcadores/', $imageName);*/
+
     
 
        
         $reservation->name = $request->name;
         $reservation->path= base_path() ."/public/marcadores/".$request->name;
-     
-        if($reservation->save()){
+
+
+
+
+
+
+
+
+
+
+        if($result['status'] == 201){
+
+            if($reservation->save()){
+
+                return back()->with('msj', 'Datos guardados');
+            }
+
+            else{
+                return back()->with('errormsj','No Se guardaron los datos');
+            }
+        }
+        else{
+
+            return back()->with('errormsj',$body['result_code']);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* if($reservation->save()){
             return back()->with('msj', 'Datos guardados');
         }
         else{
             return back();
-        }
+        }*/
     }
 
     public function edit($id){

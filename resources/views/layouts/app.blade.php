@@ -31,9 +31,12 @@
                    <!-- <a class="navbar-brand" href="{{ url('/') }}">
                         {{ config('app.name', 'Laravel') }}
                     </a>-->
+                    @if (Auth::check())
                      <a class="navbar-brand" href="{{ url('/reservations')}}">Reservations</a>
                     <a class="navbar-brand" href="{{ url('/museums')}}">Museos</a>
                     <a class="navbar-brand" href="{{ url('/showrooms')}}">Salas</a>
+                    <a class="navbar-brand" href="{{ url('/artifacts')}}">Artefactos</a>
+                    @endif
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">

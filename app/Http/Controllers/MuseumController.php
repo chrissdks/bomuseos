@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use App\Rules\alpha_space;
+use Illuminate\Support\Facades\File;
+
 
 
 class MuseumController extends Controller
@@ -64,7 +66,9 @@ class MuseumController extends Controller
         $museum->deletedBy   = '';
 
         if($museum->save()){
+            File::makeDirectory(base_path() . '/public/marcadores/'.$request->name,0775, true);
             return back()->with('msj', 'Datos guardados');
+
         }
         else{
             return back();

@@ -18,14 +18,18 @@ class CreateArtifactsTable extends Migration
             $table->string('name');
             $table->string('marker_path');
             $table->integer('type_id')->unsigned();
+            $table->integer('showroom_id')->unsigned()->nullable();
             $table->longText('description');
             $table->string('video_url');
+            $table->string('image_path');
+            $table->string('target_id');
             $table->timestamps();
             $table->string('createdBy');
             $table->string('updatedBy');
             $table->softDeletes();
             $table->string('deletedBy');
             $table->foreign('type_id')->references('id')->on('types');
+            $table->foreign('showroom_id')->references('id')->on('showrooms');
 
 
 
