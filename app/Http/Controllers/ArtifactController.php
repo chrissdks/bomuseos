@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Artifact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,7 @@ use App\Showroom;
 use App\Rules\alpha_num_space;
 use SimpleSoftwareIO\QrCode\BaconQrCodeGenerator;
 use VWS;
+use PDF;
 class ArtifactController extends Controller
 {
     /**
@@ -49,7 +51,7 @@ class ArtifactController extends Controller
     {
         $this->validate($request,[
 
-            'name'=> ['required','unique', new alpha_num_space],
+            'name'=> ['required', new alpha_num_space],
             'museum'=> 'required',
             'showroom'=>'required',
             'type'=>'required',
@@ -57,7 +59,6 @@ class ArtifactController extends Controller
 
         ],[
             'name.required'=> 'El campo esta vacio,un nombre es necesario',
-            'name.unique'=> 'Ese nombre ya existe',
             'type.required'=> 'Se requiere elegir un tipo',
             'name.alpha_num_space'=> 'El campo debe contener solamente caracteres alfanumericos y espacios',
             'museum.required'=> 'Seleccione un museo',
@@ -85,21 +86,21 @@ class ArtifactController extends Controller
 
 //GENERACION DE CODIGO QR
         $qrcode = new BaconQrCodeGenerator;
-        $qrcode->format('png')->margin(0)->size(480)->backgroundColor(255,255,255)->generate($request->name.','.Hash::make($request->name).','.$request->type.','.$request->showroom,base_path() . '/public/Marcadores/'.$museumname->name.'/'.$showroomname->name.'/'.str_replace(' ', '_', $request->name).'_marker.png');
+        $qrcode->format('png')->margin(0)->size(480)->backgroundColor(255,255,255)->generate($request->name.','.Hash::make($request->name).','.$request->type.','.$request->showroom,base_path() . '/public/marcadores/'.$museumname->name.'/'.$showroomname->name.'/'.str_replace(' ', '_', $request->name).'_marker.png');
 
 
 
 
 //marker path
-        $artifact->marker_path = base_path() . '/public/Marcadores/'.$museumname->name.'/'.$showroomname->name.'/'.str_replace(' ', '_', $request->name).'_marker.png';
+        $artifact->marker_path = base_path() . '/public/marcadores/'.$museumname->name.'/'.$showroomname->name.'/'.str_replace(' ', '_', $request->name).'_marker.png';
 
 //Path para la imagen
         if($request->hasFile('image')) {
             $imageName = str_replace(' ', '_', $request->name) . '.' . $request->file('image')->getClientOriginalExtension();
-            $artifact->image_path = base_path() . '/public/Marcadores/' . $museumname->name . '/' . $showroomname->name . '/' .$imageName;
+            $artifact->image_path = base_path() . '/public/marcadores/' . $museumname->name . '/' . $showroomname->name . '/' .$imageName;
 
-            $request->file('image')->move(base_path() . '/public/Marcadores/' . $museumname->name . '/' . $showroomname->name . '/', $imageName);
-            $image_path=base_path() . '/public/Marcadores/' . $museumname->name . '/' . $showroomname->name . '/' . $imageName;
+            $request->file('image')->move(base_path() . '/public/marcadores/' . $museumname->name . '/' . $showroomname->name . '/', $imageName);
+            $image_path=base_path() . '/public/marcadores/' . $museumname->name . '/' . $showroomname->name . '/' . $imageName;
         }
         else{
             $artifact->image_path='';
@@ -110,10 +111,10 @@ class ArtifactController extends Controller
         if($request->hasFile('video')) {
 
             $videoName = str_replace(' ', '_', $request->name) . '.' . $request->file('video')->getClientOriginalExtension();
-            $artifact->video_url = base_path() . '/public/Marcadores/' . $museumname->name . '/' . $showroomname->name . '/' .$videoName;
+            $artifact->video_url = base_path() . '/public/marcadores/' . $museumname->name . '/' . $showroomname->name . '/' .$videoName;
 
-            $request->file('video')->move(base_path() . '/public/Marcadores/' . $museumname->name . '/' . $showroomname->name . '/', $videoName);
-            $video_url= base_path() . '/public/Marcadores/' . $museumname->name . '/' . $showroomname->name . '/' . $videoName;
+            $request->file('video')->move(base_path() . '/public/marcadores/' . $museumname->name . '/' . $showroomname->name . '/', $videoName);
+            $video_url= base_path() . '/public/marcadores/' . $museumname->name . '/' . $showroomname->name . '/' . $videoName;
         }
         else{
             $artifact->video_url='';
@@ -137,7 +138,7 @@ class ArtifactController extends Controller
         $result= VWS::addTarget([
             'name' =>str_replace(' ', '_',  $request->name),
             'width' => 50,
-            'path' => base_path() . '/public/Marcadores/'.$museumname->name.'/'.$showroomname->name.'/'.str_replace(' ', '_', $request->name).'_marker.png',
+            'path' => base_path() . '/public/marcadores/'.$museumname->name.'/'.$showroomname->name.'/'.str_replace(' ', '_', $request->name).'_marker.png',
             'metadata'=>$meta]);
         $body=json_decode($result['body'],true);
 
@@ -207,19 +208,40 @@ class ArtifactController extends Controller
      * @param  \App\Artifact  $artifact
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Artifact $artifact)
+    public function destroy($id)
     {
-        //
+        $artefact = Artifact::find($id);
+        $artefact->deletedBy   = (Auth::user()->name.' '.Auth::user()->last_name);
+        if($artefac->save()){
+            Artifact::destroy($id);
+            return redirect('artifacts')->with('msj', 'Dato eliminado');
+        }
+        else{
+            return back();
+        }
     }
 
-    public function printmarker($id)
+    public function print_marker($id)
     {
-        $marker = DB::table('artifacts')
-            ->select('marker_path')
-            ->where('id',$id)->first();
+        $marker = Artifact::find($id);
+        //$markerinfo = json_decode($marker,true);
+       // $marker_id = $marker->id;
+        /*
+        $view =  \View::make('pdf.invoice', compact('markerinfo', 'marker_id'))->render();
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadHTML($view);
+        return $pdf->stream('print_marker');
 
-        $pdf = App::make('dompdf.wrapper');
+
+
+                $pdf = PDF::loadView('pdf', compact('$markerinfo','marker_id'));
+        return $pdf->stream('invoice.pdf');*/
+
+/*        $pdf = App::make('dompdf.wrapper');
         $pdf->loadHTML('<h1>Test</h1>');
-        return $pdf->stream();
+        return $pdf->stream();*/
+
+        $pdf = PDF::loadView('pdf',compact('marker'));
+        return $pdf->stream($marker->name.'_'.$marker->type_id.'.pdf');
     }
 }

@@ -4,6 +4,7 @@
 		<thead>
 		<th>Artefacto</th>
 		<th>Sala</th>
+		<th>Museo</th>
 
 		</thead>
 		<tbody>
@@ -22,6 +23,11 @@
 						{{ csrf_field() }}
 						<input type="submit" class="btn btn-danger btn-xs" value="Eliminar" >
 					</form>
+
+				</td>
+
+				<td>
+					<a href="{{action('ArtifactController@print_marker', $row->id)}}"class="btn btn-info btn-xs" target="_blank">PDF</a>
 
 				</td>
 

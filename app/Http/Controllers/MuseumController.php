@@ -58,8 +58,8 @@ class MuseumController extends Controller
         ]);
 
         $museum = new Museum();
-        $museum->name = strtoupper( $request->name);
-        $museum->address = strtoupper( $request->address);
+        $museum->name = $request->name;
+        $museum->address = $request->address;
         $museum->phone =  $request->phone;
         $museum->createdBy   = Auth::user()->name.' '.Auth::user()->last_name;
         $museum->updatedBy   = Auth::user()->name.' '.Auth::user()->last_name;
@@ -128,7 +128,7 @@ class MuseumController extends Controller
         ]);
 
         $museum =  Museum::find($id);
-        $museum->name = strtoupper( $request->name);
+        $museum->name = $request->name;
         $museum->address = strtoupper( $request->address);
         $museum->phone =  $request->phone;
         $museum->updatedBy   = Auth::user()->name.' '.Auth::user()->last_name;
@@ -150,7 +150,7 @@ class MuseumController extends Controller
     public function destroy($id)
     {
         $museum = Museum::find($id);
-        $museum->deletedBy   = strtoupper(Auth::user()->name.' '.Auth::user()->last_name);
+        $museum->deletedBy   = (Auth::user()->name.' '.Auth::user()->last_name);
         if($museum->save()){
             Museum::destroy($id);
             return redirect('museums')->with('msj', 'Dato eliminado');

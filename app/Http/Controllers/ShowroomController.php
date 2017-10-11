@@ -59,7 +59,7 @@ class ShowroomController extends Controller
         ]);
 
         $showroom = new Showroom();
-        $showroom->name = strtoupper( $request->name);
+        $showroom->name = $request->name;
         $showroom->museum_id = $request->museum;
         $showroom->createdBy   = Auth::user()->name.' '.Auth::user()->last_name;
         $showroom->updatedBy   = Auth::user()->name.' '.Auth::user()->last_name;
@@ -127,7 +127,7 @@ class ShowroomController extends Controller
         ]);
 
         $showroom = Showroom::find($id);
-        $showroom->name = strtoupper( $request->name);
+        $showroom->name = $request->name;
         $showroom->museum_id = $request->museum;
         $showroom->updatedBy   = Auth::user()->name.' '.Auth::user()->last_name;
         $showroom->deletedBy   = '';
@@ -148,8 +148,16 @@ class ShowroomController extends Controller
      * @param  \App\Showroom  $showroom
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Showroom $showroom)
+    public function destroy($id)
     {
-        //
+        $showroom = Showroom::find($id);
+        $showroom->deletedBy   = (Auth::user()->name.' '.Auth::user()->last_name);
+        if($showroom->save()){
+            Showroom::destroy($id);
+            return redirect('showrooms')->with('msj', 'Dato eliminado');
+        }
+        else{
+            return back();
+        }
     }
 }

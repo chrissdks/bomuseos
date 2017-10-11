@@ -24,3 +24,4 @@ Route::resource('/museums','MuseumController');
 Route::resource('/showrooms','ShowroomController');
 Route::resource('/artifacts','ArtifactController');
 Route::get('/findShowroom','genController@findShowroom');
+Route::get('/print_marker/{id}','ArtifactController@print_marker');

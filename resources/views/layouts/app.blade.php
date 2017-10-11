@@ -32,7 +32,7 @@
                         {{ config('app.name', 'Laravel') }}
                     </a>-->
                     @if (Auth::check())
-                     <a class="navbar-brand" href="{{ url('/reservations')}}">Reservations</a>
+                   <!--  <a class="navbar-brand" href="{{ url('/reservations')}}">Reservations</a>-->
                     <a class="navbar-brand" href="{{ url('/museums')}}">Museos</a>
                     <a class="navbar-brand" href="{{ url('/showrooms')}}">Salas</a>
                     <a class="navbar-brand" href="{{ url('/artifacts')}}">Artefactos</a>
