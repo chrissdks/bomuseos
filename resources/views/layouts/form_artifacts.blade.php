@@ -56,7 +56,7 @@
     </div>
 
 
-    <div class="col-lg-10">
+   <!-- <div class="col-lg-10">
         <div class="form-group {{ $errors->has('description') ? ' has-error' : '' }}">
         <label for="name" class="control-label"> Descripcion</label> <span class="glyphicon glyphicon-edit"></span>
       <textarea class="form-control" name="description" style="margin: 0px -115.672px 0px 0px; width: 713px; height: 111px;" id="description" required> {{ old('description') }}</textarea>
@@ -75,7 +75,7 @@
       <input type="file" name="image"> </input>
        </div>
     </div>
-
+-->
     <div class="col-lg-10">
         <div class=" form-group {{ $errors->has('video') ? ' has-error' : '' }}">
             <label for="video" class="control-label"> Video</label><span class="glyphicon glyphicon-facetime-video"></span>

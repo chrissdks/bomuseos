@@ -64,18 +64,16 @@ class ShowroomController extends Controller
         $showroom->createdBy   = Auth::user()->name.' '.Auth::user()->last_name;
         $showroom->updatedBy   = Auth::user()->name.' '.Auth::user()->last_name;
         $showroom->deletedBy   = '';
-        $museumname = DB::table('museums')
-            ->select('name')
-            ->where('id',$request->museum)->first();
 
+        if($showroom->save())
+        {
+            return redirect('showrooms')->with('msj', 'Datos Modificados');
+        }
+        else
+        {
+            return back()->with('errormsj','No Se guardaron los datos');
+        }
 
-        if($showroom->save()){
-            File::makeDirectory(base_path() . '/public/marcadores/'.$museumname->name.'/'.$request->name,0775, true);
-            return back()->with('msj', 'Datos guardados');
-        }
-        else{
-            return back();
-        }
 
     }
 
@@ -125,7 +123,9 @@ class ShowroomController extends Controller
             'name.alpha_num_space'=> 'Este campo solo acepta carateres alphabeticos y espacios',
             'museum.required'=> 'Seleccione un museo',
         ]);
-
+        $lastname= Showroom::query()
+            -> where('id',$id)
+            ->first();
         $showroom = Showroom::find($id);
         $showroom->name = $request->name;
         $showroom->museum_id = $request->museum;

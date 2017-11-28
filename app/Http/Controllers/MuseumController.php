@@ -64,15 +64,17 @@ class MuseumController extends Controller
         $museum->createdBy   = Auth::user()->name.' '.Auth::user()->last_name;
         $museum->updatedBy   = Auth::user()->name.' '.Auth::user()->last_name;
         $museum->deletedBy   = '';
+       // File::makeDirectory(base_path() . '/marcadores',0775, true);
 
-        if($museum->save()){
-            File::makeDirectory(base_path() . '/public/marcadores/'.$request->name,0775, true);
-            return back()->with('msj', 'Datos guardados');
 
-        }
-        else{
-            return back();
-        }
+            if($museum->save())
+            {
+                return redirect('museums')->with('msj', 'Datos Modificados');
+            }
+            else
+            {
+                return back()->with('errormsj','No Se guardaron los datos');
+            }
 
 
 
@@ -127,18 +129,24 @@ class MuseumController extends Controller
             'phone.numeric'=> 'El campo debe contener solamente caracteres alfabeticos'
         ]);
 
+
         $museum =  Museum::find($id);
         $museum->name = $request->name;
         $museum->address = strtoupper( $request->address);
         $museum->phone =  $request->phone;
         $museum->updatedBy   = Auth::user()->name.' '.Auth::user()->last_name;
         $museum->deletedBy   = '';
+
         if($museum->save()){
             return redirect('museums')->with('msj', 'Datos Modificados');
         }
         else{
-            return back();
+            return back()->with('errormsj','No Se guardaron los datos');
         }
+
+
+
+
     }
 
     /**

@@ -1,1 +1,1 @@
-edit
+view

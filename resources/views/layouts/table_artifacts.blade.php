@@ -16,7 +16,7 @@
 
 
 
-				<td><a href="showrooms/{{ $row->id }}/edit" class="btn btn-warning btn-xs">Modificar</a></td>
+				<td><a href="artifacts/{{ $row->id }}/edit" class="btn btn-warning btn-xs">Modificar</a></td>
 				<td>
 					<form action="{{ route('artifacts.destroy', $row->id) }}" method="POST" >
 						<input type="hidden" name="_method" value="DELETE">

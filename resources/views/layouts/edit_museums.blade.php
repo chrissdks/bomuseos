@@ -3,7 +3,7 @@
 <input type="hidden" name="_method" value="PUT">
 {{ csrf_field() }}
 	<div class="form-group">
-		<label for="address" class="col-lg-2 control-label">Nombre</label> <span class="fa fa-bank"></span>
+		<label for="name" class="col-lg-2 control-label">Nombre</label> <span class="fa fa-bank"></span>
 		<div class="col-lg-10">
 			<input type="text" class="form-control" name="name" placeholder="Ingrese el nombre del museo" value="{{$editmuseum->last()->name}}" required>
 			@if($errors->has('name'))
@@ -37,12 +37,25 @@
 		</div>
 	</div>
 
-  <div class="form-group">
-    <div class="col-lg-offset-2 col-lg-10">
-      <button type="submit" class="btn btn-default">Grabar</button>
-    </div>
-  </div>
-  <input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}">
+	<table>
+		<tr>
+			<td>
+				<div class="form-group">
+					<div class="col-lg-offset-2 col-lg-10" style="margin-left: 45px;">
+						<button type="submit" class="btn btn-success">Update</button>
+					</div>
+				</div>
+				<input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}">
+			</td>
+			<td>
+				<div class="form-group">
+					<div class="col-lg-offset-2 col-lg-10" style="margin-left: 100px;">
+						<a  href="{{route('museums.index')}}" class="btn btn-danger">Cancelar</a>
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table>
 </form>
 
 
