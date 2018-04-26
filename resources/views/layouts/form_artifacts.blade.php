@@ -80,6 +80,9 @@
         <div class=" form-group {{ $errors->has('video') ? ' has-error' : '' }}">
             <label for="video" class="control-label"> Video</label><span class="glyphicon glyphicon-facetime-video"></span>
             <input type="file" name="video"> </input>
+            @if($errors->has('video'))
+                <span style="color:red;">{{ $errors->first('video') }}</span>
+            @endif
 
         </div>
     </div>

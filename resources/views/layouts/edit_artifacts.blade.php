@@ -1,5 +1,5 @@
 @if(isset($edit))
-    <form class="form-horizontal" role="form" method="POST" action="{{ route('artifacts.update', $editartifact->last()->id) }}">
+    <form enctype="multipart/form-data" class="form-horizontal" role="form " method="POST" action="{{ route('artifacts.update', $editartifact->last()->id) }}">
         <input type="hidden" name="_method" value="PUT">
 		{{ csrf_field() }}
         <div class="form-group">

@@ -57,12 +57,14 @@ class ArtifactController extends Controller
             'showroom'=>'required',
             'type'=>'required',
            // 'description'=>'required',
+            'video'=>'required',
 
         ],[
             'name.required'=> 'El campo esta vacio,un nombre es necesario',
             'type.required'=> 'Se requiere elegir un tipo',
             'name.alpha_num_space'=> 'El campo debe contener solamente caracteres alfanumericos y espacios',
             'museum.required'=> 'Seleccione un museo',
+            'video.required'=> 'Seleccione un video',
         ]);
 
         $artifact = new Artifact();
@@ -250,12 +252,7 @@ class ArtifactController extends Controller
             ->where('id',$request->showroom)->first();
         File::move( base_path() . '/marcadores/'.str_replace(' ', '_', $artifact->name).'_'.$lastmuseum->museum_id.'_'.$artifact->showroom_id.'_marker.png',base_path() . '/marcadores/'.str_replace(' ', '_', $request->name).'_'.$museumname->id.'_'.$request->showroom.'_marker.png');
 
-        $artifact->name = $request->name;
-        $artifact->type_id = $request->type;
-        $artifact->showroom_id = $request->showroom;
-        $artifact->createdBy   = Auth::user()->name.' '.Auth::user()->last_name;
-        $artifact->updatedBy   = Auth::user()->name.' '.Auth::user()->last_name;
-        $artifact->deletedBy   = '';
+
 
         $extension = File::extension(str_replace(' ', '_', $artifact->name).'_'.$lastmuseum->museum_id.'_'.$artifact->showroom_id);
 
@@ -265,13 +262,22 @@ class ArtifactController extends Controller
         $artifact->marker_path = base_path() .'/marcadores/'.str_replace(' ', '_', $request->name).'_'.$museumname->id.'_'.$request->showroom.'_marker.png';
 
         if($request->hasFile('video')) {
+            $videoName =str_replace(' ', '_', $artifact->name).'_'.$lastmuseum->museum_id.'_'.$artifact->showroom_id.'.'.$request->file('video')->getClientOriginalExtension();
 
-            $videoName =str_replace(' ', '_', $request->name).'_'.$museumname->id.'_'.$request->showroom. $request->file('video')->getClientOriginalExtension();
             $artifact->video_url = base_path() . '/marcadores/'.$videoName;
 
-            $request->file('video')->move(base_path() . 'marcadores/'.$videoName);
-            $video_url= base_path() . '/marcadores/'.$videoName;
+
+
+            $request->file('video')->move(base_path() . '/marcadores/',$videoName);
         }
+
+
+        $artifact->name = $request->name;
+        $artifact->type_id = $request->type;
+        $artifact->showroom_id = $request->showroom;
+        $artifact->createdBy   = Auth::user()->name.' '.Auth::user()->last_name;
+        $artifact->updatedBy   = Auth::user()->name.' '.Auth::user()->last_name;
+        $artifact->deletedBy   = '';
 
         if($artifact->save()){
 
@@ -297,6 +303,8 @@ class ArtifactController extends Controller
     {
         $artefact = Artifact::find($id);
         $artefact->deletedBy   = (Auth::user()->name.' '.Auth::user()->last_name);
+        VWS::deleteTarget($artefact->target_id);
+
         if($artefact->save()){
             Artifact::destroy($id);
             return redirect('artifacts')->with('msj', 'Dato eliminado');
