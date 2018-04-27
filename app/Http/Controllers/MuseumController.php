@@ -119,12 +119,12 @@ class MuseumController extends Controller
 
         $this->validate($request,[
 
-            'name'=> 'required|alpha',
+            'name'=> ['required', new alpha_space],
             'address'=> 'required',
             'phone'=> 'numeric',
         ],[
             'name.required'=> 'El campo esta vacio,un nombre es necesario',
-            'name.alpha_dash'=> 'El campo debe contener solamente caracteres alfabeticos',
+            'name.alpha_space'=> 'El campo debe contener solamente caracteres alfabeticos',
             'address.required'=> 'El campo esta vacio,una direccion es necesaria',
             'phone.numeric'=> 'El campo debe contener solamente caracteres alfabeticos'
         ]);
